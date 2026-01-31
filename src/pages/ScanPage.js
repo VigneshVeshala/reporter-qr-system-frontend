@@ -11,7 +11,6 @@ function ScanPage() {
   const [isScanning, setIsScanning] = useState(true);
   const [scanned, setScanned] = useState(null);
 
-  // Load all employees once
   useEffect(() => {
     axios
       .get("http://localhost:8080/employees")
@@ -24,38 +23,29 @@ function ScanPage() {
 
     let text = "";
 
-    if (typeof qr === "string") {
-      text = qr;
-    } else if (qr?.text) {
-      text = qr.text;
-    } else if (qr?.data) {
-      text = qr.data;
-    } else {
-      return;
-    }
+    if (typeof qr === "string") text = qr;
+    else if (qr?.text) text = qr.text;
+    else if (qr?.data) text = qr.data;
+    else return;
 
     const parts = text.split("|").map((x) => x.trim());
 
     if (parts.length !== 3) {
       setIsScanning(false);
-      setScanned({ invalid: true, raw: text });
+      setScanned({ invalid: true });
       return;
     }
 
-    const [id, name, role] = parts;
+    const [id] = parts;
 
-    // ✅ FIX 1: strict equality
     const found = employees.find(
       (e) => String(e.id) === String(id)
     );
 
     setIsScanning(false);
 
-    if (found) {
-      setScanned(found);
-    } else {
-      setScanned({ notFound: true, id, name, role });
-    }
+    if (found) setScanned(found);
+    else setScanned({ notFound: true, id });
   };
 
   const handleError = (err) => {
@@ -95,12 +85,12 @@ function ScanPage() {
           <p><b>Name:</b> {scanned.empName}</p>
           <p><b>Role:</b> {scanned.role}</p>
 
-          {/* ✅ FIX 2: alt added */}
           {scanned.image && (
             <img
               src={`data:image/png;base64,${scanned.image}`}
               height="120"
-              alt="Reporter photo"
+              alt=""
+              aria-hidden="true"
               style={{ borderRadius: "8px", marginTop: "10px" }}
             />
           )}
@@ -116,7 +106,7 @@ function ScanPage() {
             textAlign: "center",
           }}
         >
-          Reporter not found for ID {scanned.id}
+          Reporter not found
         </p>
       )}
 
