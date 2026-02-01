@@ -13,7 +13,7 @@ export default function DetailsPage() {
 
   const loadEmployees = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/employees");
+      const res = await axios.get("https://reporter-qr-system-backend-production.up.railway.app/employees");
       setEmployees(res.data);
     } catch (err) {
       console.error("Error loading employees", err);

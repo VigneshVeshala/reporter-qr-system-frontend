@@ -13,7 +13,7 @@ function ScanPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/employees")
+      .get("https://reporter-qr-system-backend-production.up.railway.app/employees")
       .then((res) => setEmployees(res.data))
       .catch((err) => console.error("Load error:", err));
   }, []);

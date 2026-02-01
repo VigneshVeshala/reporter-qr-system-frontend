@@ -17,7 +17,7 @@ export default function AddPage() {
     if (image) formData.append("image", image);
 
     try {
-      await axios.post("http://localhost:8080/employees/add", formData);
+      await axios.post("https://reporter-qr-system-backend-production.up.railway.app/employees/add", formData);
       setMessage("✅ Employee added successfully");
       setEmpName("");
       setRole("");
