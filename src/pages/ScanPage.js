@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import QrScanner from "react-qr-scanner";
-import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 
 function ScanPage() {
-  const navigate = useNavigate();
-
   const [employees, setEmployees] = useState([]);
   const [isScanning, setIsScanning] = useState(true);
   const [scanned, setScanned] = useState(null);
@@ -21,14 +17,8 @@ function ScanPage() {
   const handleScan = (qr) => {
     if (!qr) return;
 
-    let text = "";
-
-    if (typeof qr === "string") text = qr;
-    else if (qr?.text) text = qr.text;
-    else if (qr?.data) text = qr.data;
-    else return;
-
-    const parts = text.split("|").map((x) => x.trim());
+    const text = qr?.text || qr?.data || qr;
+    const parts = text.split("|");
 
     if (parts.length !== 3) {
       setIsScanning(false);
@@ -45,23 +35,19 @@ function ScanPage() {
     setIsScanning(false);
 
     if (found) setScanned(found);
-    else setScanned({ notFound: true, id });
+    else setScanned({ notFound: true });
   };
 
   const handleError = (err) => {
-    console.log("SCAN ERROR:", err);
+    console.log("Scan error:", err);
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Header />
-
-      <h2 style={{ textAlign: "center", marginTop: "10px" }}>
-        Scan Reporter QR
-      </h2>
+    <div>
+      <h1 className="page-title">Scan Reporter QR</h1>
 
       {isScanning && (
-        <div style={{ width: "300px", margin: "20px auto" }}>
+        <div className="scanner-box">
           <QrScanner
             delay={300}
             onError={handleError}
@@ -72,75 +58,42 @@ function ScanPage() {
       )}
 
       {scanned && !scanned.invalid && !scanned.notFound && (
-        <div
-          style={{
-            border: "2px solid green",
-            padding: "15px",
-            marginTop: "20px",
-            textAlign: "center",
-          }}
-        >
+        <div className="result-card">
           <h3>Reporter Found</h3>
-          <p><b>ID:</b> {scanned.id}</p>
-          <p><b>Name:</b> {scanned.empName}</p>
-          <p><b>Role:</b> {scanned.role}</p>
+          <p><strong>ID:</strong> {scanned.id}</p>
+          <p><strong>Name:</strong> {scanned.empName}</p>
+          <p><strong>Role:</strong> {scanned.role}</p>
 
           {scanned.image && (
             <img
               src={`data:image/png;base64,${scanned.image}`}
               height="120"
               alt=""
-              aria-hidden="true"
-              style={{ borderRadius: "8px", marginTop: "10px" }}
+              className="rounded-img"
             />
           )}
         </div>
       )}
 
-      {scanned?.notFound && (
-        <p
-          style={{
-            color: "red",
-            fontWeight: "bold",
-            marginTop: "20px",
-            textAlign: "center",
-          }}
-        >
-          Reporter not found
-        </p>
+      {scanned?.invalid && (
+        <p className="error-text">Invalid QR scanned!</p>
       )}
 
-      {scanned?.invalid && (
-        <p
-          style={{
-            color: "red",
-            fontWeight: "bold",
-            marginTop: "20px",
-            textAlign: "center",
-          }}
-        >
-          Invalid QR scanned!
-        </p>
+      {scanned?.notFound && (
+        <p className="error-text">Reporter not found!</p>
       )}
 
       {(scanned || !isScanning) && (
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <button
-            onClick={() => {
-              setScanned(null);
-              setIsScanning(true);
-            }}
-          >
-            Scan Again
-          </button>
-        </div>
-      )}
-
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <button onClick={() => navigate("/")} style={{ padding: "8px 16px" }}>
-          ⬅ Back to Home
+        <button
+          className="primary-btn"
+          onClick={() => {
+            setScanned(null);
+            setIsScanning(true);
+          }}
+        >
+          Scan Again
         </button>
-      </div>
+      )}
     </div>
   );
 }

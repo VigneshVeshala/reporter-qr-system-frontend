@@ -1,38 +1,230 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+/* Layout */
+.app-container {
+  display: flex;
   min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+  padding: 20px;
+  color: white;
   display: flex;
   flex-direction: column;
+}
+
+.logo-section {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 12px;
+  margin-bottom: 35px;
+}
+
+.logo-section h4 {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.sidebar-logo {
+  width: 65px;
+  height: auto;
+  padding: 8px;
+  background: white;
+  border-radius: 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #cbd5e1;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  background: #334155;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-link.active {
+  background: #3b82f6;
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.mode-btn {
+  margin-top: auto;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  background: linear-gradient(to right, #0f172a, #1e293b);
+  color: white;
+}
+
+/* Page Title */
+.page-title {
+  margin-bottom: 30px;
+}
+
+/* Dashboard Cards */
+.card-container {
+  display: flex;
+  gap: 20px;
+}
+
+.dashboard-card {
+  flex: 1;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-6px);
+}
+
+.dashboard-card .icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+/* Card Colors */
+.blue {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+.purple {
+  background: linear-gradient(135deg, #7c3aed, #4c1d95);
+}
+
+.orange {
+  background: linear-gradient(135deg, #f97316, #c2410c);
+}
+
+/* Light Mode */
+.dark .main-content {
+  background: linear-gradient(to right, #f1f5f9, #e2e8f0);
+  color: black;
+}
+
+.dark .sidebar {
+  background: #e2e8f0;
+  color: black;
+}
+
+.dark .nav-link {
+  color: black;
+}
+
+.dark .nav-link.active {
+  background: #3b82f6;
+  color: white;
+}
+.form-card {
+  max-width: 500px;
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.primary-btn {
+  background: #3b82f6;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: #64748b;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-container input {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1e293b;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 10px;
+  text-align: center;
+}
+
+.custom-table th {
+  background: #334155;
+}
+
+.rounded-img {
+  border-radius: 8px;
+}
+
+.no-data {
+  margin-top: 15px;
+}
+
+.scanner-box {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.result-card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.error-text {
+  color: red;
+  font-weight: bold;
 }

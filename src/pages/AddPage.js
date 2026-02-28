@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Header from "../components/Header";
 
 export default function AddPage() {
   const [empName, setEmpName] = useState("");
@@ -17,88 +16,60 @@ export default function AddPage() {
     if (image) formData.append("image", image);
 
     try {
-      await axios.post("https://reporter-qr-system-backend-production.up.railway.app/employees/add", formData);
-      setMessage("✅ Employee added successfully");
+      await axios.post(
+        "https://reporter-qr-system-backend-production.up.railway.app/employees/add",
+        formData
+      );
+
+      setMessage("✅ Reporter added successfully!");
       setEmpName("");
       setRole("");
       setImage(null);
     } catch (err) {
       console.error(err);
-      setMessage("❌ Error adding employee");
+      setMessage("❌ Error adding reporter.");
     }
   };
 
   return (
     <div>
-      <Header />
+      <h1 className="page-title">Add Reporter</h1>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "40px",
-        }}
-      >
-        <form
-          onSubmit={addEmployee}
-          style={{
-            width: "350px",
-            padding: "25px",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-            background: "#fff",
-          }}
-        >
-          <h3 style={{ textAlign: "center" }}>Add Reporter</h3>
+      <div className="form-card">
+        <form onSubmit={addEmployee}>
+          <div className="form-group">
+            <label>Reporter Name</label>
+            <input
+              type="text"
+              value={empName}
+              onChange={(e) => setEmpName(e.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            placeholder="Reporter Name"
-            value={empName}
-            onChange={(e) => setEmpName(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginBottom: "10px",
-            }}
-          />
+          <div className="form-group">
+            <label>Role</label>
+            <input
+              type="text"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            placeholder="Role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginBottom: "10px",
-            }}
-          />
+          <div className="form-group">
+            <label>Upload Image</label>
+            <input
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </div>
 
-          <input
-            type="file"
-            onChange={(e) => setImage(e.target.files[0])}
-            style={{ marginBottom: "15px" }}
-          />
-
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              padding: "10px",
-              cursor: "pointer",
-            }}
-          >
+          <button className="primary-btn" type="submit">
             Add Reporter
           </button>
 
-          {message && (
-            <p style={{ textAlign: "center", marginTop: "10px" }}>
-              {message}
-            </p>
-          )}
+          {message && <p className="form-message">{message}</p>}
         </form>
       </div>
     </div>
