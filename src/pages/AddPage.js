@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function AddPage() {
+
   const [empName, setEmpName] = useState("");
   const [role, setRole] = useState("");
   const [image, setImage] = useState(null);
@@ -13,18 +14,27 @@ export default function AddPage() {
     const formData = new FormData();
     formData.append("empName", empName);
     formData.append("role", role);
-    if (image) formData.append("image", image);
+
+    if (image) {
+      formData.append("image", image);
+    }
 
     try {
+
       await axios.post(
-        "https://reporter-qr-system-backend-production.up.railway.app/employees/add",
+        "http://localhost:8080/employees/add",
         formData
       );
 
       setMessage("✅ Reporter added successfully!");
+
       setEmpName("");
       setRole("");
       setImage(null);
+
+      // clear file input
+      document.getElementById("imageInput").value = "";
+
     } catch (err) {
       console.error(err);
       setMessage("❌ Error adding reporter.");
@@ -33,10 +43,13 @@ export default function AddPage() {
 
   return (
     <div>
+
       <h1 className="page-title">Add Reporter</h1>
 
       <div className="form-card">
+
         <form onSubmit={addEmployee}>
+
           <div className="form-group">
             <label>Reporter Name</label>
             <input
@@ -60,7 +73,9 @@ export default function AddPage() {
           <div className="form-group">
             <label>Upload Image</label>
             <input
+              id="imageInput"
               type="file"
+              accept="image/*"
               onChange={(e) => setImage(e.target.files[0])}
             />
           </div>
@@ -69,9 +84,14 @@ export default function AddPage() {
             Add Reporter
           </button>
 
-          {message && <p className="form-message">{message}</p>}
+          {message && (
+            <p className="form-message">{message}</p>
+          )}
+
         </form>
+
       </div>
+
     </div>
   );
 }

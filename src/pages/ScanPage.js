@@ -3,30 +3,36 @@ import axios from "axios";
 import QrScanner from "react-qr-scanner";
 
 function ScanPage() {
+
   const [employees, setEmployees] = useState([]);
   const [isScanning, setIsScanning] = useState(true);
   const [scanned, setScanned] = useState(null);
 
   useEffect(() => {
+
     axios
-      .get("https://reporter-qr-system-backend-production.up.railway.app/employees")
+      .get("http://localhost:8080/employees")
       .then((res) => setEmployees(res.data))
       .catch((err) => console.error("Load error:", err));
+
   }, []);
 
   const handleScan = (qr) => {
+
     if (!qr) return;
 
     const text = qr?.text || qr?.data || qr;
+
     const parts = text.split("|");
 
     if (parts.length !== 3) {
+
       setIsScanning(false);
       setScanned({ invalid: true });
       return;
     }
 
-    const [id] = parts;
+    const id = parts[0].trim();
 
     const found = employees.find(
       (e) => String(e.id) === String(id)
@@ -34,8 +40,11 @@ function ScanPage() {
 
     setIsScanning(false);
 
-    if (found) setScanned(found);
-    else setScanned({ notFound: true });
+    if (found) {
+      setScanned(found);
+    } else {
+      setScanned({ notFound: true });
+    }
   };
 
   const handleError = (err) => {
@@ -44,6 +53,7 @@ function ScanPage() {
 
   return (
     <div>
+
       <h1 className="page-title">Scan Reporter QR</h1>
 
       {isScanning && (
@@ -58,8 +68,11 @@ function ScanPage() {
       )}
 
       {scanned && !scanned.invalid && !scanned.notFound && (
+
         <div className="result-card">
+
           <h3>Reporter Found</h3>
+
           <p><strong>ID:</strong> {scanned.id}</p>
           <p><strong>Name:</strong> {scanned.empName}</p>
           <p><strong>Role:</strong> {scanned.role}</p>
@@ -68,11 +81,13 @@ function ScanPage() {
             <img
               src={`data:image/png;base64,${scanned.image}`}
               height="120"
-              alt=""
+              alt="Reporter"
               className="rounded-img"
             />
           )}
+
         </div>
+
       )}
 
       {scanned?.invalid && (
@@ -94,6 +109,7 @@ function ScanPage() {
           Scan Again
         </button>
       )}
+
     </div>
   );
 }

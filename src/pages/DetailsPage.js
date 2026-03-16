@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function DetailsPage() {
+
   const [employees, setEmployees] = useState([]);
   const [filterName, setFilterName] = useState("");
   const [filterRole, setFilterRole] = useState("");
@@ -12,10 +13,13 @@ export default function DetailsPage() {
 
   const loadEmployees = async () => {
     try {
+
       const res = await axios.get(
-        "https://reporter-qr-system-backend-production.up.railway.app/employees"
+        "http://localhost:8080/employees"
       );
+
       setEmployees(res.data);
+
     } catch (err) {
       console.error("Error loading employees", err);
     }
@@ -29,9 +33,11 @@ export default function DetailsPage() {
 
   return (
     <div>
+
       <h1 className="page-title">Reporter Details</h1>
 
       <div className="filter-container">
+
         <input
           placeholder="Filter by Name"
           value={filterName}
@@ -53,10 +59,13 @@ export default function DetailsPage() {
         >
           Reset
         </button>
+
       </div>
 
       <div className="table-wrapper">
+
         <table className="custom-table">
+
           <thead>
             <tr>
               <th>Name</th>
@@ -67,10 +76,14 @@ export default function DetailsPage() {
           </thead>
 
           <tbody>
+
             {filteredEmployees.map((e) => (
               <tr key={e.id}>
+
                 <td>{e.empName}</td>
+
                 <td>{e.role}</td>
+
                 <td>
                   <img
                     src={`data:image/png;base64,${e.qr}`}
@@ -78,25 +91,31 @@ export default function DetailsPage() {
                     alt="QR"
                   />
                 </td>
+
                 <td>
                   {e.image && (
                     <img
                       src={`data:image/png;base64,${e.image}`}
                       height="60"
-                      alt="Employee"
+                      alt="Reporter"
                       className="rounded-img"
                     />
                   )}
                 </td>
+
               </tr>
             ))}
+
           </tbody>
+
         </table>
 
         {filteredEmployees.length === 0 && (
           <p className="no-data">No Reporter Found</p>
         )}
+
       </div>
+
     </div>
   );
 }

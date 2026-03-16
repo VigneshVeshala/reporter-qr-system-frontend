@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import logo from "../assets/logo.png";
+import ChatBot from "./ChatBot";
 
 export default function Layout({ children }) {
   const [darkMode, setDarkMode] = useState(true);
@@ -35,6 +36,12 @@ export default function Layout({ children }) {
           <Link to="/scan" className={isActive("/scan") ? "nav-link active" : "nav-link"}>
             📷 Scan QR
           </Link>
+          <Link 
+             to="/epaper" 
+            className={isActive("/epaper") ? "nav-link active" : "nav-link"}
+>
+            📰 E Paper
+          </Link>
 
           <button
             className="mode-btn"
@@ -49,6 +56,7 @@ export default function Layout({ children }) {
         <div className="main-content">
           {children}
         </div>
+        <ChatBot/>
 
       </div>
     </div>
